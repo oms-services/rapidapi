@@ -1,12 +1,19 @@
 language: node_js
 node_js:
-  - "12"
-
+- '12'
 services:
-  - docker
-
+- docker
 before_install:
-  - npm i @microservices/cli
-
+- npm i @microservices/cli
 script:
-  - npx oms build
+- npx oms build
+- |
+  output="$(npx oms run --silent \
+  -a host='twinword-emotion-analysis-v1.p.rapidapi.com' \
+  -a endpoint='/analyze/' \
+  -a args='{"text":"After living abroad for such a long time, seeing my family was the best present I could have ever wished for."}' \
+  -e RAPIDAPI_API_KEY=$RAPIDAPI_API_KEY| jq -c .)"
+  if [ "$output" != '{"emotions_detected":["joy"],"emotion_scores":{"joy":0.1345922573875,"sadness":0.022857406778851,"surprise":0.0087088390785547,"disgust":0,"anger":0,"fear":0},"version":"7.0.0","author":"twinword inc.","email":"help@twinword.com","result_code":"200","result_msg":"Success"}' ] ; then echo "$output"; exit 1; fi
+env:
+  global:
+    secure: QtGd7t0Vmr7rWKT/ExSBL3WyCW5HrFPwZ637VsYCXxrSBks5AV9+x11lFQSrfj+6zjU0WzDmxb2vXmSzjpKyoxTwB2W1HWDuq6aYd8zz2YRv8NgNkAsd67eqdSJYZgwoOK5TlqTqqAREoDhJoWSneeDamlIn2k/B4jpl+X0glU46eqX3IalBv5WErNFP4oJMu/245Tr3yNZi92/a4XLw/nCzjmTl+wQ5sxpKuaPGOkU2IFodqa4MCEEolv7s0hy33wN6xoMNmyej9d9CyvCz6/gfbC8m8A+cU0kjxIAKBPALp1vSLh/UeT8ec8IfMqUH6s/zZHPyxeoBzvL2qAzT9UmD2K5VFei0kJBAo7Lv64GtLvk36AawHE2BGL+f6ZnD5eQNoM/09eOyr/98zdPRc1wIy4mZPcSENTg6xrjLnnZ5gc93lCmk3461OVKD4BeEYX5WKnrGePY8u8RYk6F9aqLbuiYGyyTlrTyoxeOWZEk2yOgc1wCE7EZr6V08b2w6yudYg24S8TPcm916Ymoc+jBlguAyVhsivbXeuQzzhzbhctii5aRlpa6C2k/3LK4wrOCqGlntxPctqAQT8fDcIH5wvZPmn0NnVEVcfb2MJLLY2/0GIM6isKBVSVZ2dekBhtig2zGkqP64NRbCZH+z+h7W2H2VdaAfvoWuOi1A2QA=
