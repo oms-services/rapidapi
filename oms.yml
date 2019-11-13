@@ -1,0 +1,51 @@
+oms: 1
+
+info:
+  version: 1.0.0
+  title: RapidAPI
+  description: Access any valid RapidAPI service.
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+lifecycle:
+  startup:
+    command: ["node", "/app/src/index.js"]
+
+health:
+  http:
+    path: /health
+    port: 8080
+
+actions:
+  api:
+    help: Call any endpoint established via RAPIDAPI_HOST
+    http:
+      path: /
+      method: post
+      port: 8080
+    arguments:
+      host:
+        type: string
+        required: true
+        in: requestBody
+        help: "RapidAPI Host header value `X-RapidAPI-Host`"
+      endpoint:
+        type: string
+        required: true
+        in: requestBody
+        help: "RapidAPI Host path, such as `/analyze/`"
+      args:
+        type: map
+        required: false
+        in: requestBody
+        help: Arguments accepted by the RapidAPI `host` endpoint.
+    output:
+      contentType: application/json
+      type: map
+
+environment:
+  RAPIDAPI_API_KEY:
+    type: string
+    required: true
+    help: RapidAPI API Key
