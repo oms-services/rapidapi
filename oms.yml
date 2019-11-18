@@ -25,6 +25,12 @@ actions:
       method: post
       port: 8080
     arguments:
+      method:
+        type: string
+        required: false
+        in: requestBody
+        default: get
+        help: All requests default to HTTP GET, but can be set to any valid HTTP Method verb.
       host:
         type: string
         required: true
@@ -40,6 +46,10 @@ actions:
         required: false
         in: requestBody
         help: Arguments accepted by the RapidAPI `host` endpoint.
+      headers: list
+        required: false
+        in: requestBody
+        help: Any optional headers to attach to the request
     output:
       contentType: application/json
       type: map

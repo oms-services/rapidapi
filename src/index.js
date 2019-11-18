@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
@@ -10,14 +8,11 @@ app.use(bodyParser.json())
 const { PORT = 8080, RAPIDAPI_API_KEY } = process.env
 
 app.post('/', (req, res) => {
-  const { args, host = '', endpoint = '' } = req.body
+  const { args, method = 'GET', host = '', endpoint = '' } = req.body
 
-  const api = unirest('GET', `https://${host}${endpoint}`)
+  const api = unirest(method, `https://${host}${endpoint}`)
 
-  const query = JSON.parse(args)
-  console.log(query)
-  console.log(typeof query)
-  api.query(query)
+  api.query(JSON.parse(args))
 
   api.headers({
     'x-rapidapi-host': host,
