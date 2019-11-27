@@ -1,22 +1,24 @@
 oms: 1
-
 info:
   version: 1.0.0
   title: RapidAPI
   description: Access any valid RapidAPI service.
   license:
     name: MIT
-    url: https://opensource.org/licenses/MIT
-
+    url: 'https://opensource.org/licenses/MIT'
+  contact:
+    name: Open Microservices
+    url: 'https://openmicroservices.org'
+    email: core@openmicroservices.org
 lifecycle:
   startup:
-    command: ["node", "/app/src/index.js"]
-
+    command:
+      - node
+      - /app/src/index.js
 health:
   http:
     path: /health
     port: 8080
-
 actions:
   api:
     help: Call any endpoint established via RAPIDAPI_HOST
@@ -29,12 +31,12 @@ actions:
         type: string
         required: true
         in: requestBody
-        help: "RapidAPI Host header value `X-RapidAPI-Host`"
+        help: RapidAPI Host header value `X-RapidAPI-Host`
       endpoint:
         type: string
         required: true
         in: requestBody
-        help: "RapidAPI Host path, such as `/analyze/`"
+        help: 'RapidAPI Host path, such as `/analyze/`'
       args:
         type: map
         required: false
@@ -43,7 +45,6 @@ actions:
     output:
       contentType: application/json
       type: map
-
 environment:
   RAPIDAPI_API_KEY:
     type: string
